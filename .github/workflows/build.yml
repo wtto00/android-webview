@@ -28,14 +28,25 @@ jobs:
           TATO_WEBVIEW_STORE_PASSWORD: ${{ secrets.TATO_WEBVIEW_STORE_PASSWORD }}
           TATO_WEBVIEW_KEY_ALIAS: ${{ secrets.TATO_WEBVIEW_KEY_ALIAS }}
           TATO_WEBVIEW_KEY_PASSWORD: ${{ secrets.TATO_WEBVIEW_KEY_PASSWORD }}
+        run: ./gradlew assembleRelease
+
+      - name: Archive apk artifact
+        if: startsWith(github.ref, 'refs/tags/v') != true
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk-release-$GITHUB_SHA
+          path: ./app/build/outputs/apk/release/app-release.apk
+
+      - name: Move file
+        if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          ./gradlew assembleRelease
           mkdir -p ./app/build/outputs/apk/release/wang.tato.webview_${{github.ref}}
           mv ./app/build/outputs/apk/release/app-release.apk ./app/build/outputs/apk/release/wang.tato.webview_${{github.ref}}.apk
 
       - name: Release
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v1
         with:
           draft: true
           generate_release_notes: true
-          files: ./app/build/outputs/apk/release/app-release.apk
+          files: ./app/build/outputs/apk/release/wang.tato.webview_${{github.ref}}.apk
