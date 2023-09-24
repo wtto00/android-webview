@@ -1,9 +1,7 @@
 name: 'Build'
 on:
-  pull_request:
-  push:
-    branches:
-      - main
+  release:
+    types: [ published ]
 
 jobs:
   Build:
@@ -23,3 +21,9 @@ jobs:
 
       - name: Run build
         run: ./gradlew assembleRelease
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: archive-apk
+          path: ./app/build/outputs/apk/release/app-release.apk
