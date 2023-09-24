@@ -24,7 +24,13 @@ jobs:
         uses: amyu/setup-android@v3.1
 
       - name: Run build
-        run: ./gradlew assembleRelease
+        env:
+          TATO_WEBVIEW_STORE_PASSWORD: ${{ secrets.TATO_WEBVIEW_STORE_PASSWORD }}
+          TATO_WEBVIEW_KEY_ALIAS: ${{ secrets.TATO_WEBVIEW_KEY_ALIAS }}
+          TATO_WEBVIEW_KEY_PASSWORD: ${{ secrets.TATO_WEBVIEW_KEY_PASSWORD }}
+        run: |
+          ./gradlew assembleRelease
+          mv ./app/build/outputs/apk/release/app-release.apk ./app/build/outputs/apk/release/wang.tato.webview_${{github.ref}}.apk
 
       - name: Release
         uses: softprops/action-gh-release@v1
