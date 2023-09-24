@@ -30,6 +30,7 @@ jobs:
           TATO_WEBVIEW_KEY_PASSWORD: ${{ secrets.TATO_WEBVIEW_KEY_PASSWORD }}
         run: |
           ./gradlew assembleRelease
+          mkdir -p ./app/build/outputs/apk/release/wang.tato.webview_${{github.ref}}
           mv ./app/build/outputs/apk/release/app-release.apk ./app/build/outputs/apk/release/wang.tato.webview_${{github.ref}}.apk
 
       - name: Release
