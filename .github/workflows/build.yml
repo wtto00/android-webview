@@ -1,6 +1,7 @@
-name: 'Build'
+name: "Build"
 on:
   pull_request:
+  push:
     branches:
       - main
 
@@ -30,5 +31,5 @@ jobs:
       - name: Archive apk artifact
         uses: actions/upload-artifact@v3
         with:
-          name: apk-release-${{ github.event.pull_request.head.sha }}
+          name: apk-release-${{ github.event.workflow_run.head.sha }}
           path: ./app/build/outputs/apk/release/app-release.apk
