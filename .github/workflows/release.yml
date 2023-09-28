@@ -11,7 +11,7 @@ jobs:
       - name: Download apk artifact
         uses: actions/download-artifact@v3
         with:
-          name: apk-release-${{ github.event.pull_request.head.sha }}
+          name: apk-release-${{ github.event.workflow_run.head.sha }}
           path: ./app/build/outputs/apk/release/wang.tato.webview_${{ github.ref_name }}.apk
 
       - name: Release
