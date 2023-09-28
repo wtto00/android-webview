@@ -1,13 +1,12 @@
 name: "Build"
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened]
     branches:
       - main
 
 jobs:
   Build:
-    if: github.event.pull_request.merged != true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -34,19 +33,3 @@ jobs:
         with:
           name: apk-release-${{ github.event.pull_request.head.sha }}
           path: ./app/build/outputs/apk/release/app-release.apk
-
-  Archive:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download apk artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: apk-release-${{ github.event.pull_request.head.sha }}
-          path: ./artifacts/wang.tato.webview.apk
-
-      - name: Archive apk artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: apk-release-${{ github.sha }}
-          path: ./artifacts/wang.tato.webview.apk
