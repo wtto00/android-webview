@@ -8,6 +8,9 @@ on:
 jobs:
   Build:
     if: github.event.pull_request.merged != true
+    concurrency:
+      group: ${{ github.head_ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
