@@ -9,10 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download apk artifact
-        uses: actions/download-artifact@v3
+        uses: dawidd6/action-download-artifact@v2
         with:
+          workflow: build.yml
           name: apk-release-${{ github.sha }}
-          path: ./app/build/outputs/apk/release/wang.tato.webview_${{ github.ref_name }}.apk
+
+      - name: Rename apk artifact
+        run: |
+          mv app-release.apk wang.tato.webview_${{ github.ref_name }}.apk
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -21,4 +25,4 @@ jobs:
         with:
           draft: true
           generate_release_notes: true
-          files: ./app/build/outputs/apk/release/wang.tato.webview_${{ github.ref_name }}.apk
+          files: wang.tato.webview_${{ github.ref_name }}.apk
